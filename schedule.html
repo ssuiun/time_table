@@ -105,7 +105,7 @@
     border-radius:12px; padding:3px; gap:2px;
   }
   .view-toggle button{
-    border:none; background:transparent; padding:7px 12px; border-radius:9px;
+    border:none; background:transparent; padding:7px 10px; border-radius:9px;
     font-size:13px; font-weight:600; color:var(--ink-soft); cursor:pointer;
   }
   .view-toggle button.active{background:var(--ink); color:var(--on-ink);}
@@ -255,6 +255,21 @@
     .class-card, .btn.nudge{animation:none;}
     .sheet, .backdrop, .toast{transition:none;}
   }
+  /* exchange rates */
+  .rate-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px; margin-bottom:12px;}
+  .rate-card h3{margin:0 0 12px; font-size:13px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.04em;}
+  .rate-input{width:100%; font-size:26px; font-weight:700; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--field); color:var(--ink); font-family:inherit;}
+  .cur-chips{display:flex; gap:6px; margin:10px 0 14px;}
+  .cur-chip{flex:1; padding:9px 0; border-radius:12px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); font-size:13px; font-weight:700; cursor:pointer;}
+  .cur-chip.on{background:var(--ink); color:var(--on-ink); border-color:var(--ink);}
+  .rate-out{display:flex; justify-content:space-between; align-items:baseline; padding:10px 0; border-top:1px solid var(--border);}
+  .rate-out .cur{font-weight:700; color:var(--ink-soft);}
+  .rate-out .val{font-size:20px; font-weight:700; font-variant-numeric:tabular-nums;}
+  .rate-pair{display:flex; justify-content:space-between; padding:9px 0; border-top:1px solid var(--border); font-variant-numeric:tabular-nums;}
+  .rate-pair:first-of-type{border-top:none;}
+  .rate-pair b{font-weight:700;}
+  .rate-meta{font-size:12px; color:var(--ink-soft); display:flex; justify-content:space-between; align-items:center; gap:8px; padding:0 4px;}
+  .rate-meta button{border:1px solid var(--border); background:var(--surface); color:var(--ink); border-radius:10px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer;}
 </style>
 
 <script>
@@ -281,6 +296,7 @@
         <div class="view-toggle">
           <button id="btnList" class="active" type="button">List</button>
           <button id="btnWeek" type="button">Week</button>
+          <button id="btnRates" type="button">Rates</button>
         </div>
       </div>
     </div>
@@ -633,7 +649,94 @@
     });
   }
 
-  function renderMain(){ if(view === 'list') renderList(); else renderWeek(); }
+  // ---- exchange rates (KGS, USD, CNY) ----
+  const CURS = ['KGS','USD','CNY'];
+  const RATES_KEY = 'schedule:rates:v1';
+  // Fallback estimates (units per 1 USD), used only until live rates load.
+  let rates = {KGS:87.5, CNY:7.1};
+  let ratesInfo = {ts:0, live:false, loading:false, failed:false};
+  let rateFrom = 'USD';
+  let rateAmount = '100';
+
+  try{
+    const r = JSON.parse(localStorage.getItem(RATES_KEY) || 'null');
+    if(r && r.rates && r.rates.KGS > 0 && r.rates.CNY > 0){ rates = r.rates; ratesInfo.ts = r.ts || 0; ratesInfo.live = true; }
+  }catch(e){}
+
+  function usdPer(c){ return c === 'USD' ? 1 : rates[c]; }          // units of c per 1 USD
+  function convert(amount, from, to){ return amount / usdPer(from) * usdPer(to); }
+  function fmt(n, maxDigits){
+    return n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:maxDigits || 2});
+  }
+
+  function loadRates(){
+    if(ratesInfo.loading) return;
+    ratesInfo.loading = true; ratesInfo.failed = false;
+    if(view === 'rates') renderRates();
+    fetch('https://open.er-api.com/v6/latest/USD')
+      .then(r => r.json())
+      .then(d => {
+        const k = d && d.rates && d.rates.KGS, y = d && d.rates && d.rates.CNY;
+        if(!(k > 0 && y > 0)) throw new Error('bad data');
+        rates = {KGS:k, CNY:y};
+        ratesInfo.ts = Date.now(); ratesInfo.live = true;
+        try{ localStorage.setItem(RATES_KEY, JSON.stringify({rates, ts:ratesInfo.ts})); }catch(e){}
+      })
+      .catch(() => { ratesInfo.failed = true; })
+      .then(() => { ratesInfo.loading = false; if(view === 'rates') renderRates(); });
+  }
+
+  function updateRateOutputs(){
+    const amt = parseFloat(String(rateAmount).replace(',', '.')) || 0;
+    CURS.filter(c => c !== rateFrom).forEach(c => {
+      const el = $('out-' + c);
+      if(el) el.textContent = fmt(convert(amt, rateFrom, c));
+    });
+  }
+
+  function renderRates(){
+    const main = $('main');
+    const pairs = [['USD','KGS'],['CNY','KGS'],['USD','CNY']];
+    let status;
+    if(ratesInfo.loading) status = 'Updating…';
+    else if(ratesInfo.live){
+      status = 'Updated ' + new Date(ratesInfo.ts).toLocaleString('en-US', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) + (ratesInfo.failed ? ' (offline, cached)' : '');
+    } else status = ratesInfo.failed ? 'Offline: approximate rates' : 'Approximate rates';
+    main.innerHTML = `
+      <div class="rate-card">
+        <h3>Converter</h3>
+        <input class="rate-input" id="rateAmount" type="text" inputmode="decimal" value="${escapeHtml(rateAmount)}" aria-label="Amount">
+        <div class="cur-chips">${CURS.map(c => `<button type="button" class="cur-chip${c===rateFrom?' on':''}" data-cur="${c}">${c}</button>`).join('')}</div>
+        ${CURS.filter(c => c !== rateFrom).map(c => `<div class="rate-out"><span class="cur">${c}</span><span class="val" id="out-${c}"></span></div>`).join('')}
+      </div>
+      <div class="rate-card">
+        <h3>Rates</h3>
+        ${pairs.map(([a,b]) => `<div class="rate-pair"><span>1 ${a}</span><b>${fmt(convert(1,a,b), 4)} ${b}</b></div>`).join('')}
+        ${pairs.map(([a,b]) => `<div class="rate-pair"><span>1 ${b}</span><b>${fmt(convert(1,b,a), 4)} ${a}</b></div>`).join('')}
+      </div>
+      <div class="rate-meta"><span>${status}</span><button type="button" id="btnRefreshRates">Refresh</button></div>`;
+    $('rateAmount').oninput = (e) => { rateAmount = e.target.value; updateRateOutputs(); };
+    main.querySelectorAll('.cur-chip').forEach(b => b.onclick = () => { rateFrom = b.dataset.cur; renderRates(); });
+    $('btnRefreshRates').onclick = loadRates;
+    updateRateOutputs();
+  }
+
+  function renderMain(){
+    if(view === 'list') renderList();
+    else if(view === 'week') renderWeek();
+    else renderRates();
+  }
+
+  function setView(v){
+    view = v;
+    $('btnList').classList.toggle('active', v === 'list');
+    $('btnWeek').classList.toggle('active', v === 'week');
+    $('btnRates').classList.toggle('active', v === 'rates');
+    $('dayTabs').hidden = v === 'rates';
+    $('fabAdd').hidden = v === 'rates';
+    renderMain();
+    if(v === 'rates' && Date.now() - ratesInfo.ts > 3600000) loadRates();
+  }
 
   // ---- sheet (add/edit) ----
   function populatePeriodSelects(){
@@ -788,8 +891,9 @@
   $('btnTheme').onclick = cycleMode;
   $('fStart').onchange = syncPeriodSelectsFromTimes;
   $('fEnd').onchange = syncPeriodSelectsFromTimes;
-  $('btnList').onclick = () => { view='list'; $('btnList').classList.add('active'); $('btnWeek').classList.remove('active'); renderMain(); };
-  $('btnWeek').onclick = () => { view='week'; $('btnWeek').classList.add('active'); $('btnList').classList.remove('active'); renderMain(); };
+  $('btnList').onclick = () => setView('list');
+  $('btnWeek').onclick = () => setView('week');
+  $('btnRates').onclick = () => setView('rates');
   document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape' && $('sheet').classList.contains('show')) tryDismiss();
   });
