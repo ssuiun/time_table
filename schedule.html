@@ -232,6 +232,181 @@
     :root[data-mode="cyber"] h1::before, :root[data-mode="cyber"] h1::after, :root[data-mode="cyber"] .fab{animation:none;}
   }
 
+  /* ===== Arcane (Piltover / Zaun) theme ===== */
+  :root[data-mode="arcane"]{
+    color-scheme:dark;
+    --bg:#0A1620;
+    --surface:#122634;
+    --field:#0C1C27;
+    --ink:#F2E8D5;
+    --on-ink:#10202B;
+    --ink-soft:#9DB2BA;
+    --border:#2A4656;
+    --scrim:rgba(4,10,16,0.72);
+    --danger-bg:#3A1430;
+    --danger:#FF6FB5;
+    --now:#E64CC2;
+    --focus:#4FDCF5;
+    --radius:14px;
+    --hex:#4FDCF5;
+    --hex-soft:rgba(79,220,245,0.35);
+    --brass:#C9A24D;
+    --brass-light:#F0D27A;
+    --shimmer:#B04EE8;
+    --shadow:0 0 0 1px rgba(201,162,77,0.22), 0 6px 22px rgba(0,0,0,0.45), 0 0 24px rgba(79,220,245,0.06);
+    --fab-shadow:0 0 18px rgba(79,220,245,0.55), 0 0 44px rgba(79,220,245,0.25);
+  }
+  :root[data-mode="arcane"] body{
+    font-family:"Cormorant Garamond","EB Garamond",Georgia,"Times New Roman",serif;
+    font-size:16px;
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(ellipse 70% 45% at 20% 0%, rgba(79,220,245,0.16), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(176,78,232,0.22), transparent 60%),
+      radial-gradient(ellipse 50% 30% at 0% 100%, rgba(143,209,79,0.10), transparent 60%),
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.016) 0 2px, transparent 2px 7px);
+    background-attachment:fixed;
+  }
+  /* painterly grain */
+  :root[data-mode="arcane"] body::before{
+    content:""; position:fixed; inset:0; z-index:70; pointer-events:none; opacity:.35;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode:overlay;
+  }
+  :root[data-mode="arcane"] header{background:linear-gradient(var(--bg) 80%, transparent);}
+  :root[data-mode="arcane"] h1{
+    font-family:"Cinzel","Cormorant Garamond",Georgia,serif; font-weight:700; font-size:24px;
+    letter-spacing:0.08em; text-transform:uppercase;
+    background:linear-gradient(180deg, var(--brass-light) 0%, var(--brass) 55%, #8F6A22 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 10px rgba(79,220,245,0.25));
+  }
+  :root[data-mode="arcane"] .subtitle{color:var(--hex); font-style:italic; font-size:14px; letter-spacing:0.02em;}
+  :root[data-mode="arcane"] .subtitle::before{content:"\25C8  "; font-style:normal; color:var(--brass); font-size:11px;}
+  :root[data-mode="arcane"] .sync.error{color:var(--danger);}
+
+  :root[data-mode="arcane"] .icon-btn{
+    border-radius:50%; color:var(--hex); border:1px solid var(--brass);
+    box-shadow:0 0 0 3px var(--surface), 0 0 0 4px rgba(201,162,77,0.45), 0 0 14px var(--hex-soft);
+    background:radial-gradient(circle at 50% 35%, #1B3A4C, var(--surface));
+  }
+  :root[data-mode="arcane"] .view-toggle{border-radius:999px; border-color:var(--brass); box-shadow:inset 0 0 0 1px rgba(201,162,77,0.25);}
+  :root[data-mode="arcane"] .view-toggle button{border-radius:999px; font-family:"Cinzel",serif; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;}
+  :root[data-mode="arcane"] .view-toggle button.active,
+  :root[data-mode="arcane"] .day-tab.active,
+  :root[data-mode="arcane"] .chip.on,
+  :root[data-mode="arcane"] .cur-chip.on,
+  :root[data-mode="arcane"] .btn-primary,
+  :root[data-mode="arcane"] .toast{
+    background:linear-gradient(180deg, var(--brass-light), var(--brass) 60%, #A8822E); color:#1A1206;
+    border-color:var(--brass-light); box-shadow:0 0 10px rgba(240,210,122,0.35), inset 0 1px 0 rgba(255,255,255,0.35);
+  }
+  :root[data-mode="arcane"] .day-tab{
+    border-radius:999px; font-family:"Cinzel",serif; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    border-color:var(--border); background:linear-gradient(180deg, #16303F, var(--surface));
+  }
+  :root[data-mode="arcane"] .day-tab.today:not(.active){color:var(--hex); border-color:var(--hex-soft); box-shadow:0 0 10px var(--hex-soft);}
+  :root[data-mode="arcane"] .day-tab .dot{background:var(--hex); box-shadow:0 0 6px var(--hex);}
+  :root[data-mode="arcane"] .day-tab.active .dot{background:#1A1206; box-shadow:none;}
+
+  :root[data-mode="arcane"] .class-card,
+  :root[data-mode="arcane"] .rate-card{
+    position:relative; border:1px solid rgba(201,162,77,0.55);
+    background:linear-gradient(160deg, rgba(79,220,245,0.08), transparent 45%, rgba(176,78,232,0.08)), var(--surface);
+  }
+  /* art-nouveau inner frame */
+  :root[data-mode="arcane"] .class-card::before,
+  :root[data-mode="arcane"] .rate-card::before{
+    content:""; position:absolute; inset:4px; border-radius:calc(var(--radius) - 4px);
+    border:1px solid rgba(201,162,77,0.28); pointer-events:none;
+  }
+  :root[data-mode="arcane"] .class-card::after{
+    content:"\25C8"; position:absolute; top:6px; right:10px; color:var(--brass); font-size:11px; opacity:.85;
+  }
+  :root[data-mode="arcane"] .class-card .bar{width:4px; flex-basis:4px; margin-left:6px; border-radius:4px; box-shadow:0 0 12px var(--c);}
+  :root[data-mode="arcane"] .class-time{color:var(--hex); font-family:"Cinzel",serif; font-size:12px; letter-spacing:0.06em; text-shadow:0 0 8px var(--hex-soft);}
+  :root[data-mode="arcane"] .class-name{font-family:"Cinzel",serif; font-weight:700; font-size:15px; letter-spacing:0.01em; color:var(--brass-light);}
+  :root[data-mode="arcane"] .class-room{font-style:italic; font-size:14px;}
+  :root[data-mode="arcane"] .class-note{border-radius:8px; border-left:2px solid var(--shimmer); background:rgba(176,78,232,0.10); font-size:14px;}
+  :root[data-mode="arcane"] .class-note svg{color:var(--shimmer);}
+  :root[data-mode="arcane"] .empty-state b{font-family:"Cinzel",serif; color:var(--brass-light); letter-spacing:0.06em;}
+
+  :root[data-mode="arcane"] .week-col{border-left:1px solid rgba(201,162,77,0.22);}
+  :root[data-mode="arcane"] .week-col-header{font-family:"Cinzel",serif; letter-spacing:0.08em;}
+  :root[data-mode="arcane"] .week-col-header.today{color:var(--hex); text-shadow:0 0 8px var(--hex-soft);}
+  :root[data-mode="arcane"] .time-slot{font-family:"Cinzel",serif;}
+  :root[data-mode="arcane"] .week-col-body{background:linear-gradient(rgba(201,162,77,0.16) 1px, transparent 1px); background-size:100% 56px;}
+  :root[data-mode="arcane"] .wblock{
+    color:#10202B; font-weight:700; border-radius:6px; font-family:"Cinzel",serif; font-size:9.5px;
+    box-shadow:0 0 10px var(--c), inset 0 0 0 1px rgba(255,255,255,0.35);
+  }
+  :root[data-mode="arcane"] .wblock.has-note::after{background:#10202B;}
+  :root[data-mode="arcane"] .now-line{box-shadow:0 0 8px var(--now);}
+
+  /* hextech crystal FAB */
+  :root[data-mode="arcane"] .fab{
+    border-radius:0; clip-path:polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    background:linear-gradient(160deg, #9FF0FF, var(--hex) 45%, #1792B0); color:#06202A;
+    animation:hexPulse 3s ease-in-out infinite;
+  }
+  :root[data-mode="arcane"] .fab::before{
+    content:""; position:absolute; inset:3px; clip-path:polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    border:1px solid rgba(255,255,255,0.45); pointer-events:none; opacity:.7;
+  }
+  @keyframes hexPulse{0%,100%{filter:drop-shadow(0 0 10px rgba(79,220,245,0.55))} 50%{filter:drop-shadow(0 0 22px rgba(79,220,245,0.95))}}
+
+  :root[data-mode="arcane"] .sheet{
+    border-radius:22px 22px 0 0; border:1px solid var(--brass); border-bottom:none;
+    box-shadow:0 -10px 40px rgba(79,220,245,0.10), inset 0 1px 0 rgba(240,210,122,0.35);
+    background:linear-gradient(180deg, rgba(79,220,245,0.06), transparent 140px), var(--surface);
+  }
+  :root[data-mode="arcane"] .sheet-handle{background:var(--brass); width:44px; height:3px;}
+  :root[data-mode="arcane"] .sheet h2{font-family:"Cinzel",serif; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass-light); font-size:16px; text-align:center;}
+  :root[data-mode="arcane"] .sheet h2::before{content:"\25C8  "; color:var(--hex); font-size:11px;}
+  :root[data-mode="arcane"] .sheet h2::after{content:"  \25C8"; color:var(--hex); font-size:11px;}
+  :root[data-mode="arcane"] .field label{font-family:"Cinzel",serif; color:var(--brass); letter-spacing:0.1em; font-size:11px;}
+  :root[data-mode="arcane"] .field input[type=text],
+  :root[data-mode="arcane"] .field textarea,
+  :root[data-mode="arcane"] select.period-select,
+  :root[data-mode="arcane"] input[type=time],
+  :root[data-mode="arcane"] .rate-input{
+    border-radius:10px; border:1px solid var(--border); box-shadow:inset 0 0 0 1px rgba(201,162,77,0.12); font-family:inherit; font-size:16px;
+  }
+  :root[data-mode="arcane"] .field input:focus,
+  :root[data-mode="arcane"] .field textarea:focus,
+  :root[data-mode="arcane"] select.period-select:focus,
+  :root[data-mode="arcane"] input[type=time]:focus,
+  :root[data-mode="arcane"] .rate-input:focus{
+    outline:none; border-color:var(--hex); box-shadow:0 0 12px var(--hex-soft);
+  }
+  :root[data-mode="arcane"] .chip, :root[data-mode="arcane"] .cur-chip{border-radius:999px; font-family:"Cinzel",serif; font-size:11px; letter-spacing:0.06em;}
+  :root[data-mode="arcane"] .swatch{box-shadow:0 0 10px var(--c), inset 0 0 0 1px rgba(255,255,255,0.3);}
+  :root[data-mode="arcane"] .swatch.on{border-color:var(--brass-light);}
+  :root[data-mode="arcane"] .btn{border-radius:999px; font-family:"Cinzel",serif; letter-spacing:0.08em; text-transform:uppercase; font-size:13px;}
+  :root[data-mode="arcane"] .btn-ghost{background:transparent; border:1px solid var(--border); color:var(--ink-soft);}
+  :root[data-mode="arcane"] .btn-danger{background:transparent; border:1px solid var(--shimmer); color:#E9A3FF; box-shadow:0 0 10px rgba(176,78,232,0.3);}
+  :root[data-mode="arcane"] .rate-card h3{font-family:"Cinzel",serif; color:var(--brass); letter-spacing:0.1em;}
+  :root[data-mode="arcane"] .rate-out .val, :root[data-mode="arcane"] .rate-pair b{color:var(--hex); font-family:"Cinzel",serif;}
+  :root[data-mode="arcane"] .rate-meta button{border-radius:999px; border-color:var(--brass); color:var(--brass-light); font-family:"Cinzel",serif;}
+  @media (prefers-reduced-motion: reduce){
+    :root[data-mode="arcane"] .fab{animation:none;}
+  }
+
+  /* cyber theme: rates tab */
+  :root[data-mode="cyber"] .rate-card{
+    border-radius:4px; border:1px solid var(--border);
+    clip-path:polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    background:linear-gradient(135deg, rgba(0,240,255,0.06), transparent 40%), var(--surface);
+  }
+  :root[data-mode="cyber"] .rate-card h3{color:var(--neon-c); letter-spacing:0.14em;}
+  :root[data-mode="cyber"] .rate-card h3::before{content:"// ";}
+  :root[data-mode="cyber"] .rate-input{border-radius:2px; border-left:2px solid rgba(0,240,255,0.55); font-family:inherit;}
+  :root[data-mode="cyber"] .rate-input:focus{outline:none; border-color:var(--neon-c); box-shadow:0 0 10px rgba(0,240,255,0.35);}
+  :root[data-mode="cyber"] .cur-chip{border-radius:3px; clip-path:polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); letter-spacing:0.08em;}
+  :root[data-mode="cyber"] .cur-chip.on{background:var(--neon-y); color:#06060D; border-color:var(--neon-y); box-shadow:0 0 10px rgba(252,238,10,0.45);}
+  :root[data-mode="cyber"] .rate-out .val, :root[data-mode="cyber"] .rate-pair b{color:var(--neon-y); text-shadow:0 0 8px rgba(252,238,10,0.4);}
+  :root[data-mode="cyber"] .rate-meta button{border-radius:2px; border-color:rgba(0,240,255,0.45); color:var(--neon-c); text-transform:uppercase; letter-spacing:0.08em;}
+
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   [hidden]{display:none !important;}
   html,body{min-height:100%;}
@@ -276,7 +451,7 @@
     border-radius:12px; padding:3px; gap:2px;
   }
   .view-toggle button{
-    border:none; background:transparent; padding:7px 12px; border-radius:9px;
+    border:none; background:transparent; padding:7px 10px; border-radius:9px;
     font-size:13px; font-weight:600; color:var(--ink-soft); cursor:pointer;
   }
   .view-toggle button.active{background:var(--ink); color:var(--on-ink);}
@@ -426,6 +601,21 @@
     .class-card, .btn.nudge{animation:none;}
     .sheet, .backdrop, .toast{transition:none;}
   }
+  /* exchange rates */
+  .rate-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px; margin-bottom:12px;}
+  .rate-card h3{margin:0 0 12px; font-size:13px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.04em;}
+  .rate-input{width:100%; font-size:26px; font-weight:700; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--field); color:var(--ink); font-family:inherit;}
+  .cur-chips{display:flex; gap:6px; margin:10px 0 14px;}
+  .cur-chip{flex:1; padding:9px 0; border-radius:12px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); font-size:13px; font-weight:700; cursor:pointer;}
+  .cur-chip.on{background:var(--ink); color:var(--on-ink); border-color:var(--ink);}
+  .rate-out{display:flex; justify-content:space-between; align-items:baseline; padding:10px 0; border-top:1px solid var(--border);}
+  .rate-out .cur{font-weight:700; color:var(--ink-soft);}
+  .rate-out .val{font-size:20px; font-weight:700; font-variant-numeric:tabular-nums;}
+  .rate-pair{display:flex; justify-content:space-between; padding:9px 0; border-top:1px solid var(--border); font-variant-numeric:tabular-nums;}
+  .rate-pair:first-of-type{border-top:none;}
+  .rate-pair b{font-weight:700;}
+  .rate-meta{font-size:12px; color:var(--ink-soft); display:flex; justify-content:space-between; align-items:center; gap:8px; padding:0 4px;}
+  .rate-meta button{border:1px solid var(--border); background:var(--surface); color:var(--ink); border-radius:10px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer;}
 </style>
 
 <script>
@@ -433,11 +623,14 @@
   (function(){
     try{
       var m = localStorage.getItem('schedule:theme');
-      if(m === 'light' || m === 'dark' || m === 'cyber') document.documentElement.setAttribute('data-mode', m);
-      if(m === 'cyber'){
-        var l = document.createElement('link'); l.rel = 'stylesheet'; l.id = 'cyberFonts';
-        l.href = 'https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap';
-        document.head.appendChild(l);
+      var fonts = {
+        cyber:'https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap',
+        arcane:'https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap'
+      };
+      if(m === 'light' || m === 'dark' || fonts[m]) document.documentElement.setAttribute('data-mode', m);
+      if(fonts[m]){
+        var l = document.createElement('link'); l.rel = 'stylesheet'; l.id = 'themeFonts-' + m;
+        l.href = fonts[m]; document.head.appendChild(l);
       }
     }catch(e){}
   })();
@@ -457,6 +650,7 @@
         <div class="view-toggle">
           <button id="btnList" class="active" type="button">List</button>
           <button id="btnWeek" type="button">Week</button>
+          <button id="btnRates" type="button">Rates</button>
         </div>
       </div>
     </div>
@@ -554,11 +748,19 @@
     light:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
     dark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>',
     cyber:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',
+    arcane:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l5 5v10l-5 5-5-5V7z"/><path d="M12 7v10M7 12h10" opacity=".6"/></svg>',
   };
-  const THEME_LABELS = {auto:'Auto (follows your device)', light:'Light', dark:'Dark', cyber:'Cyberpunk: Edgerunners'};
-  const THEME_ORDER = ['auto','light','dark','cyber'];
-  // Neon variants of the class colours, used only by the cyberpunk theme.
-  const CYBER_COLORS = {amber:'#FCEE0A', blue:'#00F0FF', orange:'#FF6A00', teal:'#05FFA1', green:'#39FF14', purple:'#B967FF'};
+  const THEME_LABELS = {auto:'Auto (follows your device)', light:'Light', dark:'Dark', cyber:'Cyberpunk: Edgerunners', arcane:'Arcane: Piltover & Zaun'};
+  const THEME_ORDER = ['auto','light','dark','cyber','arcane'];
+  const THEME_FONTS = {
+    cyber:'https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap',
+    arcane:'https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap',
+  };
+  // Per-theme variants of the class colours (keys match COLORS).
+  const THEME_COLORS = {
+    cyber:{amber:'#FCEE0A', blue:'#00F0FF', orange:'#FF6A00', teal:'#05FFA1', green:'#39FF14', purple:'#B967FF'},
+    arcane:{amber:'#E8B94A', blue:'#4FDCF5', orange:'#E9733F', teal:'#36C4A8', green:'#9BD84A', purple:'#B04EE8'},
+  };
 
   const todayIdx = (new Date().getDay() + 6) % 7; // Monday = 0
   let selectedDay = todayIdx;
@@ -576,7 +778,8 @@
   function uid(){ return 'c' + Math.random().toString(36).slice(2,10); }
   function colorHex(key){
     const c = COLORS.find(c=>c.key===key) || COLORS[0];
-    if(mode === 'cyber' && CYBER_COLORS[c.key]) return CYBER_COLORS[c.key];
+    const t = THEME_COLORS[mode];
+    if(t && t[c.key]) return t[c.key];
     return c.hex;
   }
   function timeToMin(t){ const [h,m] = t.split(':').map(Number); return h*60+m; }
@@ -702,16 +905,16 @@
   let mode = 'auto';
   try{ const m = localStorage.getItem(THEME_KEY); if(THEME_ORDER.includes(m) && m !== 'auto') mode = m; }catch(e){}
 
-  function ensureCyberFonts(){
-    if(document.getElementById('cyberFonts')) return;
-    const l = document.createElement('link'); l.rel = 'stylesheet'; l.id = 'cyberFonts';
-    l.href = 'https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap';
-    document.head.appendChild(l);
+  function ensureThemeFonts(){
+    const href = THEME_FONTS[mode];
+    if(!href || document.getElementById('themeFonts-' + mode)) return;
+    const l = document.createElement('link'); l.rel = 'stylesheet'; l.id = 'themeFonts-' + mode;
+    l.href = href; document.head.appendChild(l);
   }
   function applyMode(){
     const root = document.documentElement;
     if(mode === 'auto') root.removeAttribute('data-mode'); else root.setAttribute('data-mode', mode);
-    if(mode === 'cyber') ensureCyberFonts();
+    ensureThemeFonts();
     const btn = $('btnTheme');
     btn.innerHTML = THEME_ICONS[mode];
     btn.setAttribute('aria-label', 'Theme: ' + THEME_LABELS[mode] + '. Tap to change.');
@@ -825,7 +1028,94 @@
     });
   }
 
-  function renderMain(){ if(view === 'list') renderList(); else renderWeek(); }
+  // ---- exchange rates (KGS, USD, CNY) ----
+  const CURS = ['KGS','USD','CNY'];
+  const RATES_KEY = 'schedule:rates:v1';
+  // Fallback estimates (units per 1 USD), used only until live rates load.
+  let rates = {KGS:87.5, CNY:7.1};
+  let ratesInfo = {ts:0, live:false, loading:false, failed:false};
+  let rateFrom = 'USD';
+  let rateAmount = '100';
+
+  try{
+    const r = JSON.parse(localStorage.getItem(RATES_KEY) || 'null');
+    if(r && r.rates && r.rates.KGS > 0 && r.rates.CNY > 0){ rates = r.rates; ratesInfo.ts = r.ts || 0; ratesInfo.live = true; }
+  }catch(e){}
+
+  function usdPer(c){ return c === 'USD' ? 1 : rates[c]; }          // units of c per 1 USD
+  function convert(amount, from, to){ return amount / usdPer(from) * usdPer(to); }
+  function fmt(n, maxDigits){
+    return n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:maxDigits || 2});
+  }
+
+  function loadRates(){
+    if(ratesInfo.loading) return;
+    ratesInfo.loading = true; ratesInfo.failed = false;
+    if(view === 'rates') renderRates();
+    fetch('https://open.er-api.com/v6/latest/USD')
+      .then(r => r.json())
+      .then(d => {
+        const k = d && d.rates && d.rates.KGS, y = d && d.rates && d.rates.CNY;
+        if(!(k > 0 && y > 0)) throw new Error('bad data');
+        rates = {KGS:k, CNY:y};
+        ratesInfo.ts = Date.now(); ratesInfo.live = true;
+        try{ localStorage.setItem(RATES_KEY, JSON.stringify({rates, ts:ratesInfo.ts})); }catch(e){}
+      })
+      .catch(() => { ratesInfo.failed = true; })
+      .then(() => { ratesInfo.loading = false; if(view === 'rates') renderRates(); });
+  }
+
+  function updateRateOutputs(){
+    const amt = parseFloat(String(rateAmount).replace(',', '.')) || 0;
+    CURS.filter(c => c !== rateFrom).forEach(c => {
+      const el = $('out-' + c);
+      if(el) el.textContent = fmt(convert(amt, rateFrom, c));
+    });
+  }
+
+  function renderRates(){
+    const main = $('main');
+    const pairs = [['USD','KGS'],['CNY','KGS'],['USD','CNY']];
+    let status;
+    if(ratesInfo.loading) status = 'Updating…';
+    else if(ratesInfo.live){
+      status = 'Updated ' + new Date(ratesInfo.ts).toLocaleString('en-US', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) + (ratesInfo.failed ? ' (offline, cached)' : '');
+    } else status = ratesInfo.failed ? 'Offline: approximate rates' : 'Approximate rates';
+    main.innerHTML = `
+      <div class="rate-card">
+        <h3>Converter</h3>
+        <input class="rate-input" id="rateAmount" type="text" inputmode="decimal" value="${escapeHtml(rateAmount)}" aria-label="Amount">
+        <div class="cur-chips">${CURS.map(c => `<button type="button" class="cur-chip${c===rateFrom?' on':''}" data-cur="${c}">${c}</button>`).join('')}</div>
+        ${CURS.filter(c => c !== rateFrom).map(c => `<div class="rate-out"><span class="cur">${c}</span><span class="val" id="out-${c}"></span></div>`).join('')}
+      </div>
+      <div class="rate-card">
+        <h3>Rates</h3>
+        ${pairs.map(([a,b]) => `<div class="rate-pair"><span>1 ${a}</span><b>${fmt(convert(1,a,b), 4)} ${b}</b></div>`).join('')}
+        ${pairs.map(([a,b]) => `<div class="rate-pair"><span>1 ${b}</span><b>${fmt(convert(1,b,a), 4)} ${a}</b></div>`).join('')}
+      </div>
+      <div class="rate-meta"><span>${status}</span><button type="button" id="btnRefreshRates">Refresh</button></div>`;
+    $('rateAmount').oninput = (e) => { rateAmount = e.target.value; updateRateOutputs(); };
+    main.querySelectorAll('.cur-chip').forEach(b => b.onclick = () => { rateFrom = b.dataset.cur; renderRates(); });
+    $('btnRefreshRates').onclick = loadRates;
+    updateRateOutputs();
+  }
+
+  function renderMain(){
+    if(view === 'list') renderList();
+    else if(view === 'week') renderWeek();
+    else renderRates();
+  }
+
+  function setView(v){
+    view = v;
+    $('btnList').classList.toggle('active', v === 'list');
+    $('btnWeek').classList.toggle('active', v === 'week');
+    $('btnRates').classList.toggle('active', v === 'rates');
+    $('dayTabs').hidden = v === 'rates';
+    $('fabAdd').hidden = v === 'rates';
+    renderMain();
+    if(v === 'rates' && Date.now() - ratesInfo.ts > 3600000) loadRates();
+  }
 
   // ---- sheet (add/edit) ----
   function populatePeriodSelects(){
@@ -981,8 +1271,9 @@
   $('btnTheme').onclick = cycleMode;
   $('fStart').onchange = syncPeriodSelectsFromTimes;
   $('fEnd').onchange = syncPeriodSelectsFromTimes;
-  $('btnList').onclick = () => { view='list'; $('btnList').classList.add('active'); $('btnWeek').classList.remove('active'); renderMain(); };
-  $('btnWeek').onclick = () => { view='week'; $('btnWeek').classList.add('active'); $('btnList').classList.remove('active'); renderMain(); };
+  $('btnList').onclick = () => setView('list');
+  $('btnWeek').onclick = () => setView('week');
+  $('btnRates').onclick = () => setView('rates');
   document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape' && $('sheet').classList.contains('show')) tryDismiss();
   });
